@@ -1,4 +1,5 @@
 const User = require("../../models/user");
+const jwt = require("jsonwebtoken");
 
 const bcrypt = require("bcryptjs"); //encrypt passwords
 
@@ -19,5 +20,20 @@ module.exports = {
     } catch (err) {
       throw err;
     }
+  },
+
+  login: async ({ email, password }) => {
+    const user = await User.findOne({ email: email });
+    if (!user) throw new Error("User does not exist!");
+    const matches = await bcrypt.compare(password, user.password);
+    if (!matches) throw new Error("Password incorrect");
+    const jwToken = jwt.sign(
+      { userId: user.id, email: user.email },
+      "eventbookinghashingkey",
+      {
+        expiresIn: "1h",
+      }
+    );
+    return { userId: user.id, token: jwToken, tokenExpiration: 1 };
   },
 };
