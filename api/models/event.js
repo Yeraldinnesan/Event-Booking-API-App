@@ -19,6 +19,15 @@ const eventSchema = new Schema({
     type: Date,
     required: true,
   },
+  image: {
+    type: String,
+    default:
+      "https://media.istockphoto.com/id/1205364747/vector/flat-calendar-icon-appointment-event-date-in-spiral-calendar-in-yellow-circle-business.jpg?s=170667a&w=0&k=20&c=d59p_ZH-RyOBehl8uqYrdmFSI_N--hqRSCzId6RPl8g=",
+  },
+  location: {
+    type: String,
+    required: true,
+  },
   creator: [
     {
       type: Schema.Types.ObjectId,
@@ -54,3 +63,24 @@ module.exports = mongoose.model("Event", eventSchema);
 //   }
 // }
 //-----------------------------------------------------------
+// {
+//   "data": {
+//     "login": {
+//       "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2M2Y5NzcwNzgxNzJlM2NkYzFkNzc2MGQiLCJlbWFpbCI6IjF0ZXN0QGVtYWlsLmNvbSIsImlhdCI6MTY3NzI5MzQyNCwiZXhwIjoxNjc3Mjk3MDI0fQ.oOL4PghbpzRORr2_AHv632SiV3Uf8k4H3q5aZO22LMc",
+//       "tokenExpiration": 1
+//     }
+//   }
+// }
+
+// mutation{
+//   createEvent(eventInput:{title:"2user event", description:"hello", price: 7.09, date:"2023-02-25T03:56:43.305Z", locarion:"USA"}){
+//     _id
+//     creator{
+//       email
+//     }
+//   }
+//   }
+
+// mutation{
+//   deleteEvent(eventId:"63f98970f1cef1b469cfab8b")
+//      }

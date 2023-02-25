@@ -40,6 +40,9 @@ module.exports = {
     try {
       const booking = await Bookings.findById(args.bookingId).populate("event");
       const event = transformEvent(booking.event);
+      if (booking.user.toString() !== req.userId) {
+        throw new Error("You are not authorized to cancel this booking");
+      }
       //console.log(event);
       await Bookings.deleteOne({ _id: args.bookingId });
       return event;

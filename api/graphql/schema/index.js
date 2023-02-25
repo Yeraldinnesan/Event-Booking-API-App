@@ -8,6 +8,8 @@ type Event {
   price: Float!
   date: String!
   creator: User!
+  location: String!
+  image: String
 }
 
 type User {
@@ -41,11 +43,15 @@ input UserInput{
 
 }
 
+
+
 input EventInput{
   title: String!
   description: String!
   price: Float!
   date: String!
+  location: String!
+  image: String
 }
 type RootQuery{
     events: [Event!]!
@@ -54,7 +60,10 @@ type RootQuery{
 }
 type RootMutation{
   createEvent(eventInput: EventInput): Event
+  updateEvent(eventId: ID!, eventInput: EventInput): Event!
+  deleteEvent(eventId: ID!): Boolean
   createUser(userInput: UserInput): User
+  updateUser(userId: ID!, userInput: UserInput): User
   bookEvent(eventId: ID!): Booking!
   cancelBooking(bookingId: ID!): Event!
 }
