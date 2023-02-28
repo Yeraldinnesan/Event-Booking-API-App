@@ -1,21 +1,27 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Home from "./components/home/Home";
-import Auth from "../auth/Auth";
+import Auth from "./auth/Auth";
+import NavBar from "./components/Navigation/NavBar";
+import Events from "./components/events/Events";
+import SignUp from "./auth/SignUp";
 
 function App() {
   return (
-    <BrowserRouter>
-      <div className="App">
+    <div className="App">
+      <Router>
+        <NavBar />
         <Routes>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/auth" element={<Auth />}></Route>
-          <Route path="/events" element={null}></Route>
-          <Route path="/bookings" element={null}></Route>
+          <Route exact path="/home" element={<Home />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/signup" element={<SignUp />} />
+
+          <Route path="/events" element={<Events />} />
+          <Route path="/bookings" element={<Auth />} />
         </Routes>
-      </div>
-    </BrowserRouter>
+      </Router>
+    </div>
   );
 }
 

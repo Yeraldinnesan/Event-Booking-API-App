@@ -3,6 +3,7 @@ const express = require("express");
 const PORT = process.env.PORT || 4000;
 
 const connectDB = require("./config/db");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const { graphqlHTTP } = require("express-graphql"); //destructuring const graphqlHttp =
 const isAuth = require("./graphql/middleware/is-auth");
@@ -18,6 +19,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(isAuth);
+app.use(cors());
 
 connectDB();
 
