@@ -1,64 +1,88 @@
-import { useState, useRef } from "react";
+import { useState, useContext } from "react";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../apollo/mutations/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { AuthContext } from "../contexts/authContext";
+import useForm from "../utility/hooks";
+import { validate } from "../utility/validations";
+
+import Swal from "sweetalert2";
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
-  const emailEl = useRef();
-  const passwordEl = useRef();
+  const [errors, setErrors] = useState({});
 
-  const switchModeHandler = () => {
-    setIsLogin((prevState) => !prevState);
-  };
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [loginUser, { error }] = useMutation(LOGIN_USER);
 
   const submitHandler = async (e) => {
-    e.preventDefault();
     setLoading(true);
-
-    const email = emailEl.current.value;
-    const password = passwordEl.current.value;
-
-    if (email.trim().length === 0 || password.trim().length === 0) {
-      setLoading(false);
-      return;
-    }
 
     try {
       const { data } = await loginUser({
         variables: {
-          email,
-          password,
+          email: values.email,
+          password: values.password,
         },
       });
 
       console.log(data);
+      login(data.login.token, data.login.userId, data.login.user);
+      navigate("/");
     } catch (error) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: error.message,
+        showConfirmButton: false,
+        timer: 2000,
+      });
       console.log(error);
     }
 
     setLoading(false);
   };
 
+  const { onChangeHandler, onSubmitHandler, values } = useForm(submitHandler, {
+    email: "",
+    password: "",
+  });
+  const handleBlur = () => {
+    const validationErrors = validate(values);
+    setErrors(validationErrors);
+  };
+
   return (
-    <form onSubmit={submitHandler}>
+    <form onSubmit={onSubmitHandler}>
       <div>
-        <label htmlFor="email">E-Mail</label>
-        <input type="email" id="email" ref={emailEl} />
+        <label>E-Mail</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          onChange={onChangeHandler}
+          onBlur={handleBlur}
+        />
+        {errors.email && <span>{errors.email}</span>}
       </div>
       <div className="form-control">
         <label htmlFor="password">Password</label>
-        <input type="password" id="password" ref={passwordEl} />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          onChange={onChangeHandler}
+          onBlur={handleBlur}
+        />
+        {errors.password && <span>{errors.password}</span>}
       </div>
       <div className="form-actions">
         <button type="submit">Log In</button>
         <Link to="/signup">
-          <div type="button" onClick={switchModeHandler}>
-            Sign Up
-          </div>
+          <div>Sign Up</div>
         </Link>
       </div>
     </form>

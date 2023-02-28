@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.c809aa28.css",
+    "main.js": "/static/js/main.624cca8d.js",
+    "static/media/booking-icon-png-19.jpg": "/static/media/booking-icon-png-19.2a87f2ebb3dc18ff3076.jpg",
+    "index.html": "/index.html",
+    "main.c809aa28.css.map": "/static/css/main.c809aa28.css.map",
+    "main.624cca8d.js.map": "/static/js/main.624cca8d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c809aa28.css",
+    "static/js/main.624cca8d.js"
+  ]
+}
